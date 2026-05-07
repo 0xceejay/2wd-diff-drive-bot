@@ -1,0 +1,10 @@
+{
+    "url": "https://cad.onshape.com/documents/292c33a7f0f854a3cdb21f44/w/3cfe75fb330dfc627e8355b6/e/a29efea0b989aa0e985d95df",
+    "outputFormat": "urdf",
+    "packageName": "bot_description",
+    "robotName": "bot",
+    "assemblyName": "robot",
+    "dynamics": {
+        "density": 1200
+    }
+}
