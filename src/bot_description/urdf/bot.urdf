@@ -80,7 +80,7 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-9.4875e-08 -2.63931e-05 0.000999305" rpy="0 -0 0"/>
+      <origin xyz="-9.4875e-08 -2.63931e-05 0.000999305" rpy="0 0 0"/>
       <geometry>
         <box size="0.19 0.10 0.04"/>
       </geometry>
@@ -434,9 +434,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.00025 -0 -0.0484" rpy="1.5708 -0 -1.5708"/>
+      <origin xyz="0.00025 -0 -0.0334" rpy="0 0 1.5708"/>
       <geometry>
-        <cylinder radius="0.033" length="0.026"/>
+        <cylinder radius="0.033" length="0.04"/>
       </geometry>
     </collision>
   </link>
@@ -466,9 +466,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.00025 -0 0.0484" rpy="-1.5708 -0 -1.5708"/>
+      <origin xyz="-0.00025 -0 0.0334" rpy="0 0 1.5708"/>
       <geometry>
-        <cylinder radius="0.033" length="0.026"/>
+        <cylinder radius="0.033" length="0.04"/>
       </geometry>
     </collision>
     <!-- Part tt_motor_3777_v10_16 -->
@@ -508,9 +508,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0 -0.0155 -0.02" rpy="0 -0 -0"/>
+      <origin xyz="-0 -0.0155 -0.02" rpy="0 0 0"/>
       <geometry>
-        <box size="0.04 0.04 0.04"/>
+        <box size="0.04 0.04 0.02"/>
       </geometry>
     </collision>
   </link>
@@ -532,7 +532,7 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0 -0 0" rpy="-1.5708 -1.5708 0"/>
+      <origin xyz="0 -0 0" rpy="0 0 0"/>
       <geometry>
         <sphere radius="0.02"/>
       </geometry>

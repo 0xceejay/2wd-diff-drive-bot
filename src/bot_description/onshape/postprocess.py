@@ -22,19 +22,44 @@ for part in parts_to_strip:
     pattern = rf'(<!-- Part {part}(?:_\d+)? -->.*?<visual>.*?</visual>\s+)<collision>.*?</collision>'
     content = re.sub(pattern, r'\1', content, flags=re.DOTALL)
 
-# Replace specific link collisions with collision shapes
+# Replace specific link collisions with collision shapes and orientation
 replacements = {
-    'chassis': '<box size="0.19 0.10 0.04"/>',
-    'wheel': '<cylinder radius="0.033" length="0.026"/>',
-    'wheel_2': '<cylinder radius="0.033" length="0.026"/>',
-    'caster_40mm_wheel_support_01': '<box size="0.04 0.04 0.04"/>',
-    'caster_40mm_wheel_30mm_01': '<sphere radius="0.02"/>',
+    'chassis': {'shape': '<box size="0.19 0.10 0.04"/>', 'rpy': '0 0 0'},
+    'wheel': {'shape': '<cylinder radius="0.033" length="0.04"/>', 'rpy': '0 0 1.5708'},
+    'wheel_2': {'shape': '<cylinder radius="0.033" length="0.04"/>', 'rpy': '0 0 1.5708'},
+    'caster_40mm_wheel_support_01': {'shape': '<box size="0.04 0.04 0.02"/>', 'rpy': '0 0 0'},
+    'caster_40mm_wheel_30mm_01': {'shape': '<sphere radius="0.02"/>', 'rpy': '0 0 0'}
 }
 
-for link_name, primitive in replacements.items():
-    # Targets the <link> block specifically to avoid accidental mesh replacements in <visual>
-    pattern = rf'(<link name="{link_name}">.*?<collision>.*?<geometry>).*?(</geometry>)'
-    content = re.sub(pattern, rf'\1\n        {primitive}\n      \2', content, flags=re.DOTALL)
+for link_name, data in replacements.items():
+    # This keeps 'xyz' exactly as it is but changes the angles
+    rpy_pattern = rf'(<link name="{link_name}">.*?<collision>.*?<origin\s+xyz="[^"]+")\s+rpy="[^"]+"'
+    content = re.sub(rpy_pattern, rf'\1 rpy="{data["rpy"]}"', content, flags=re.DOTALL)
+
+    # Replace the Geometry
+    geom_pattern = rf'(<link name="{link_name}">.*?<collision>.*?<geometry>).*?(</geometry>)'
+    content = re.sub(geom_pattern, rf'\1\n        {data["shape"]}\n      \2', content, flags=re.DOTALL)
+
+offsets = {
+    'wheel': 0.015,
+    'wheel_2': -0.015
+}
+
+for link_name, z_shift in offsets.items():
+    # This finds the collision origin tag for the specific link
+    pattern = rf'(<link name="{link_name}">.*?<collision>.*?<origin\s+xyz=")([-?\d\.e-]+)\s+([-?\d\.e-]+)\s+([-?\d\.e-]+)"'
+
+    def shift_z(match):
+        prefix = match.group(1)
+        x = match.group(2)
+        y = match.group(3)
+        z = float(match.group(4))
+
+        # Apply the shift to the existing Z value
+        new_z = z + z_shift
+        return f'{prefix}{x} {y} {new_z}"'
+
+    content = re.sub(pattern, shift_z, content, flags=re.DOTALL)
 
 # Change meshes lookup directory
 content = content.replace('package://bot_description/assets/', 'package://bot_description/meshes/')
