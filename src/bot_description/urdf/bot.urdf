@@ -1,0 +1,557 @@
+<?xml version="1.0" ?>
+<!-- Generated using onshape-to-robot -->
+<!-- Onshape https://cad.onshape.com/documents/292c33a7f0f854a3cdb21f44/w/3cfe75fb330dfc627e8355b6/e/a29efea0b989aa0e985d95df -->
+<robot name="bot">
+  <!-- Link chassis -->
+  <link name="chassis">
+    <inertial>
+      <origin xyz="0.0130405 0.000124284 -0.00128474" rpy="0 0 0"/>
+      <mass value="0.339643"/>
+      <inertia ixx="0.000350457" ixy="1.56317e-07" ixz="0.000101456" iyy="0.00106725" iyz="-4.33406e-07" izz="0.00133216"/>
+    </inertial>
+    <!-- Part spacer -->
+    <visual>
+      <origin xyz="0.136796 -0.0357567 -0.00100069" rpy="0 -0 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/spacer.stl"/>
+      </geometry>
+      <material name="spacer_material">
+        <color rgba="0.231373 0.380392 0.705882 1"/>
+      </material>
+    </visual>
+    <!-- Part tt_motor_3777_v10 -->
+    <visual>
+      <origin xyz="-0.00036815 0.0387736 -0.0135492" rpy="3.14159 1.5708 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/tt_motor_3777_v10.stl"/>
+      </geometry>
+      <material name="tt_motor_3777_v10_material">
+        <color rgba="1 0.976471 0.521569 1"/>
+      </material>
+    </visual>
+    <!-- Part spacer_2 -->
+    <visual>
+      <origin xyz="0.136796 -0.00575673 -0.00100069" rpy="0 -0 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/spacer.stl"/>
+      </geometry>
+      <material name="spacer_2_material">
+        <color rgba="0.231373 0.380392 0.705882 1"/>
+      </material>
+    </visual>
+    <!-- Part tt_motor_3777_v10_2 -->
+    <visual>
+      <origin xyz="-0.00036815 -0.0388264 -0.0135492" rpy="0 -1.5708 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/tt_motor_3777_v10__2.stl"/>
+      </geometry>
+      <material name="tt_motor_3777_v10_2_material">
+        <color rgba="1 0.976471 0.521569 1"/>
+      </material>
+    </visual>
+    <!-- Part tt_motor_3777_v10_3 -->
+    <visual>
+      <origin xyz="-0.00036815 0.0387736 -0.0135492" rpy="3.14159 1.5708 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/tt_motor_3777_v10__3.stl"/>
+      </geometry>
+      <material name="tt_motor_3777_v10_3_material">
+        <color rgba="0.960784 0.960784 0.964706 1"/>
+      </material>
+    </visual>
+    <!-- Part tt_motor_3777_v10_4 -->
+    <visual>
+      <origin xyz="-0.00036815 0.0387736 -0.0135492" rpy="3.14159 1.5708 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/tt_motor_3777_v10__4.stl"/>
+      </geometry>
+      <material name="tt_motor_3777_v10_4_material">
+        <color rgba="0.960784 0.960784 0.964706 1"/>
+      </material>
+    </visual>
+    <!-- Part chassis -->
+    <visual>
+      <origin xyz="-9.4875e-08 -2.63931e-05 0.000999305" rpy="0 -0 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/chassis.stl"/>
+      </geometry>
+      <material name="chassis_material">
+        <color rgba="0.615686 0.811765 0.929412 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-9.4875e-08 -2.63931e-05 0.000999305" rpy="0 -0 0"/>
+      <geometry>
+        <box size="0.19 0.10 0.04"/>
+      </geometry>
+    </collision>
+    <!-- Part motor_holders -->
+    <visual>
+      <origin xyz="0.0429817 0.0500736 -0.0416742" rpy="-0 0 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/motor_holders.stl"/>
+      </geometry>
+      <material name="motor_holders_material">
+        <color rgba="0.647059 0.647059 0.647059 1"/>
+      </material>
+    </visual>
+    <!-- Part tt_motor_3777_v10_5 -->
+    <visual>
+      <origin xyz="-0.00036815 -0.0388264 -0.0135492" rpy="0 -1.5708 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/tt_motor_3777_v10__4.stl"/>
+      </geometry>
+      <material name="tt_motor_3777_v10_5_material">
+        <color rgba="0.960784 0.960784 0.964706 1"/>
+      </material>
+    </visual>
+    <!-- Part motor_holders_2 -->
+    <visual>
+      <origin xyz="0.0429817 -0.0275264 -0.0416742" rpy="0 -0 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/motor_holders.stl"/>
+      </geometry>
+      <material name="motor_holders_2_material">
+        <color rgba="0.647059 0.647059 0.647059 1"/>
+      </material>
+    </visual>
+    <!-- Part motor_holders_3 -->
+    <visual>
+      <origin xyz="0.0429817 0.0294736 -0.0416742" rpy="0 -0 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/motor_holders.stl"/>
+      </geometry>
+      <material name="motor_holders_3_material">
+        <color rgba="0.647059 0.647059 0.647059 1"/>
+      </material>
+    </visual>
+    <!-- Part tt_motor_3777_v10_6 -->
+    <visual>
+      <origin xyz="-0.00036815 -0.0388264 -0.0135492" rpy="0 -1.5708 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/tt_motor_3777_v10__5.stl"/>
+      </geometry>
+      <material name="tt_motor_3777_v10_6_material">
+        <color rgba="0.627451 0.627451 0.627451 1"/>
+      </material>
+    </visual>
+    <!-- Part tt_motor_3777_v10_7 -->
+    <visual>
+      <origin xyz="-0.00036815 -0.0388264 -0.0135492" rpy="0 -1.5708 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/tt_motor_3777_v10__3.stl"/>
+      </geometry>
+      <material name="tt_motor_3777_v10_7_material">
+        <color rgba="0.960784 0.960784 0.964706 1"/>
+      </material>
+    </visual>
+    <!-- Part tt_motor_3777_v10_8 -->
+    <visual>
+      <origin xyz="-0.00036815 0.0387736 -0.0135492" rpy="3.14159 1.5708 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/tt_motor_3777_v10__2.stl"/>
+      </geometry>
+      <material name="tt_motor_3777_v10_8_material">
+        <color rgba="1 0.976471 0.521569 1"/>
+      </material>
+    </visual>
+    <!-- Part caster_40mm_swivel_plate_01 -->
+    <visual>
+      <origin xyz="0.0812499 -2.63931e-05 -0.0380007" rpy="0 -0 -1.5708"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/caster_40mm_swivel_plate_01.stl"/>
+      </geometry>
+      <material name="caster_40mm_swivel_plate_01_material">
+        <color rgba="0.705882 0.705882 0.705882 1"/>
+      </material>
+    </visual>
+    <!-- Part tt_motor_3777_v10_9 -->
+    <visual>
+      <origin xyz="-0.00036815 0.0387736 -0.0135492" rpy="3.14159 1.5708 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/tt_motor_3777_v10__6.stl"/>
+      </geometry>
+      <material name="tt_motor_3777_v10_9_material">
+        <color rgba="0.0980392 0.0980392 0.0980392 1"/>
+      </material>
+    </visual>
+    <!-- Part motor_holders_4 -->
+    <visual>
+      <origin xyz="0.0429817 -0.0481264 -0.0416742" rpy="-0 -0 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/motor_holders.stl"/>
+      </geometry>
+      <material name="motor_holders_4_material">
+        <color rgba="0.647059 0.647059 0.647059 1"/>
+      </material>
+    </visual>
+    <!-- Part tt_motor_3777_v10_10 -->
+    <visual>
+      <origin xyz="-0.00036815 0.0387736 -0.0135492" rpy="3.14159 1.5708 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/tt_motor_3777_v10__7.stl"/>
+      </geometry>
+      <material name="tt_motor_3777_v10_10_material">
+        <color rgba="0.627451 0.627451 0.627451 1"/>
+      </material>
+    </visual>
+    <!-- Part tt_motor_3777_v10_11 -->
+    <visual>
+      <origin xyz="-0.00036815 0.0387736 -0.0135492" rpy="3.14159 1.5708 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/tt_motor_3777_v10__5.stl"/>
+      </geometry>
+      <material name="tt_motor_3777_v10_11_material">
+        <color rgba="0.627451 0.627451 0.627451 1"/>
+      </material>
+    </visual>
+    <!-- Part spacer_3 -->
+    <visual>
+      <origin xyz="0.112796 -0.0357567 -0.00100069" rpy="0 -0 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/spacer.stl"/>
+      </geometry>
+      <material name="spacer_3_material">
+        <color rgba="0.231373 0.380392 0.705882 1"/>
+      </material>
+    </visual>
+    <!-- Part tt_motor_3777_v10_12 -->
+    <visual>
+      <origin xyz="-0.00036815 -0.0388264 -0.0135492" rpy="0 -1.5708 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/tt_motor_3777_v10.stl"/>
+      </geometry>
+      <material name="tt_motor_3777_v10_12_material">
+        <color rgba="1 0.976471 0.521569 1"/>
+      </material>
+    </visual>
+    <!-- Part tt_motor_3777_v10_13 -->
+    <visual>
+      <origin xyz="-0.00036815 -0.0388264 -0.0135492" rpy="0 -1.5708 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/tt_motor_3777_v10__7.stl"/>
+      </geometry>
+      <material name="tt_motor_3777_v10_13_material">
+        <color rgba="0.627451 0.627451 0.627451 1"/>
+      </material>
+    </visual>
+    <!-- Part tt_motor_3777_v10_14 -->
+    <visual>
+      <origin xyz="-0.00036815 -0.0388264 -0.0135492" rpy="0 -1.5708 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/tt_motor_3777_v10__6.stl"/>
+      </geometry>
+      <material name="tt_motor_3777_v10_14_material">
+        <color rgba="0.0980392 0.0980392 0.0980392 1"/>
+      </material>
+    </visual>
+    <!-- Part spacer_4 -->
+    <visual>
+      <origin xyz="0.112796 -0.00575673 -0.00100069" rpy="0 -0 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/spacer.stl"/>
+      </geometry>
+      <material name="spacer_4_material">
+        <color rgba="0.231373 0.380392 0.705882 1"/>
+      </material>
+    </visual>
+    <!-- Part main_half_size_board -->
+    <visual>
+      <origin xyz="0.11075 0.0356236 0.000999305" rpy="1.5708 0 -1.5708"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/main_half_size_board.stl"/>
+      </geometry>
+      <material name="main_half_size_board_material">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <!-- Part half_size_side_rail -->
+    <visual>
+      <origin xyz="0.0282799 -0.0432849 0.000635827" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/half_size_side_rail.stl"/>
+      </geometry>
+      <material name="half_size_side_rail_material">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <!-- Part half_size_side_rail_2 -->
+    <visual>
+      <origin xyz="0.0282499 0.0356236 0.000999305" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/half_size_side_rail.stl"/>
+      </geometry>
+      <material name="half_size_side_rail_2_material">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <!-- Part main_half_size_board_2 -->
+    <visual>
+      <origin xyz="0.110804 0.000622607 0.000989475" rpy="1.5708 0 -1.5708"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/main_half_size_board.stl"/>
+      </geometry>
+      <material name="main_half_size_board_2_material">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <!-- Part remache_v1_0 -->
+    <visual>
+      <origin xyz="-0.0441788 -0.0360268 0.0110493" rpy="-0.6866 -0 1.5708"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/remache_v1_0.stl"/>
+      </geometry>
+      <material name="remache_v1_0_material">
+        <color rgba="0.8 0.666667 0.321569 1"/>
+      </material>
+    </visual>
+    <!-- Part remache_v1_0_2 -->
+    <visual>
+      <origin xyz="-0.0640288 -0.0360268 0.0110493" rpy="-0.6866 -0 1.5708"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/remache_v1_0.stl"/>
+      </geometry>
+      <material name="remache_v1_0_2_material">
+        <color rgba="0.8 0.666667 0.321569 1"/>
+      </material>
+    </visual>
+    <!-- Part contacto_plano_v1_0 -->
+    <visual>
+      <origin xyz="-0.0441788 -0.0360768 0.0110493" rpy="1.5708 -0.567108 -3.14159"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/contacto_plano_v1_0.stl"/>
+      </geometry>
+      <material name="contacto_plano_v1_0_material">
+        <color rgba="0.741176 0.776471 0.8 1"/>
+      </material>
+    </visual>
+    <!-- Part porta_baterias_2x18650 -->
+    <visual>
+      <origin xyz="-0.0541038 2.31881e-05 0.000599305" rpy="0 -0 -1.5708"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/porta_baterias_2x18650.stl"/>
+      </geometry>
+      <material name="porta_baterias_2x18650_material">
+        <color rgba="0.2 0.2 0.2 1"/>
+      </material>
+    </visual>
+    <!-- Part contacto_helice_v2_0 -->
+    <visual>
+      <origin xyz="-0.0640288 -0.0357268 0.0110493" rpy="-1.5708 -0.391796 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/contacto_helice_v2_0.stl"/>
+      </geometry>
+      <material name="contacto_helice_v2_0_material">
+        <color rgba="0.741176 0.776471 0.8 1"/>
+      </material>
+    </visual>
+    <!-- Part contacto_plano_v1_0_2 -->
+    <visual>
+      <origin xyz="-0.0640288 0.0361232 0.0110493" rpy="-1.5708 -0.611892 -3.14159"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/contacto_plano_v1_0.stl"/>
+      </geometry>
+      <material name="contacto_plano_v1_0_2_material">
+        <color rgba="0.741176 0.776471 0.8 1"/>
+      </material>
+    </visual>
+    <!-- Part bateria_18650 -->
+    <visual>
+      <origin xyz="-0.0640288 -0.0301768 0.0110493" rpy="-1.5708 0.448272 -0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/bateria_18650.stl"/>
+      </geometry>
+      <material name="bateria_18650_material">
+        <color rgba="0.392157 0.6 0.392157 1"/>
+      </material>
+    </visual>
+    <!-- Part remache_v1_0_3 -->
+    <visual>
+      <origin xyz="-0.0640288 0.0360732 0.0110493" rpy="-0.6866 0 1.5708"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/remache_v1_0.stl"/>
+      </geometry>
+      <material name="remache_v1_0_3_material">
+        <color rgba="0.8 0.666667 0.321569 1"/>
+      </material>
+    </visual>
+    <!-- Part bateria_18650_2 -->
+    <visual>
+      <origin xyz="-0.0441788 0.0302232 0.0110493" rpy="-1.5708 -1.11651 -3.14159"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/bateria_18650.stl"/>
+      </geometry>
+      <material name="bateria_18650_2_material">
+        <color rgba="0.392157 0.6 0.392157 1"/>
+      </material>
+    </visual>
+    <!-- Part contacto_helice_v2_0_2 -->
+    <visual>
+      <origin xyz="-0.0441788 0.0357732 0.0110493" rpy="1.5708 1.5708 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/contacto_helice_v2_0.stl"/>
+      </geometry>
+      <material name="contacto_helice_v2_0_2_material">
+        <color rgba="0.741176 0.776471 0.8 1"/>
+      </material>
+    </visual>
+    <!-- Part remache_v1_0_4 -->
+    <visual>
+      <origin xyz="-0.0441788 0.0360732 0.0110493" rpy="-0.6866 -0 1.5708"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/remache_v1_0.stl"/>
+      </geometry>
+      <material name="remache_v1_0_4_material">
+        <color rgba="0.8 0.666667 0.321569 1"/>
+      </material>
+    </visual>
+  </link>
+  <!-- Link wheel -->
+  <link name="wheel">
+    <inertial>
+      <origin xyz="0.000233615 -1.15321e-07 -0.0320156" rpy="0 0 0"/>
+      <mass value="0.0449149"/>
+      <inertia ixx="2.33428e-05" ixy="-7.5e-11" ixz="2.4132e-08" iyy="2.3342e-05" iyz="-4.4e-11" izz="3.25125e-05"/>
+    </inertial>
+    <!-- Part tt_motor_3777_v10_15 -->
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5708 -0 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/tt_motor_3777_v10__8.stl"/>
+      </geometry>
+      <material name="tt_motor_3777_v10_15_material">
+        <color rgba="0.964706 0.964706 0.952941 1"/>
+      </material>
+    </visual>
+    <!-- Part wheel -->
+    <visual>
+      <origin xyz="0.00025 -0 -0.0484" rpy="1.5708 -0 -1.5708"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/wheel.stl"/>
+      </geometry>
+      <material name="wheel_material">
+        <color rgba="0.615686 0.811765 0.929412 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.00025 -0 -0.0484" rpy="1.5708 -0 -1.5708"/>
+      <geometry>
+        <cylinder radius="0.033" length="0.026"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint from chassis to wheel -->
+  <joint name="right_wheel" type="continuous">
+    <origin xyz="-0.00036815 -0.0387764 -0.0135492" rpy="-1.5708 -0 0"/>
+    <parent link="chassis"/>
+    <child link="wheel"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10"/>
+  </joint>
+  <!-- Link wheel_2 -->
+  <link name="wheel_2">
+    <inertial>
+      <origin xyz="-0.000233615 -1.15321e-07 0.0320156" rpy="0 0 0"/>
+      <mass value="0.0449149"/>
+      <inertia ixx="2.33428e-05" ixy="7.5e-11" ixz="2.4132e-08" iyy="2.3342e-05" iyz="4.4e-11" izz="3.25125e-05"/>
+    </inertial>
+    <!-- Part wheel_2 -->
+    <visual>
+      <origin xyz="-0.00025 -0 0.0484" rpy="-1.5708 -0 -1.5708"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/wheel.stl"/>
+      </geometry>
+      <material name="wheel_2_material">
+        <color rgba="0.615686 0.811765 0.929412 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.00025 -0 0.0484" rpy="-1.5708 -0 -1.5708"/>
+      <geometry>
+        <cylinder radius="0.033" length="0.026"/>
+      </geometry>
+    </collision>
+    <!-- Part tt_motor_3777_v10_16 -->
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5708 -0 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/tt_motor_3777_v10__8.stl"/>
+      </geometry>
+      <material name="tt_motor_3777_v10_16_material">
+        <color rgba="0.964706 0.964706 0.952941 1"/>
+      </material>
+    </visual>
+  </link>
+  <!-- Joint from chassis to wheel_2 -->
+  <joint name="left_wheel" type="continuous">
+    <origin xyz="-0.00036815 0.0387236 -0.0135492" rpy="-1.5708 0 0"/>
+    <parent link="chassis"/>
+    <child link="wheel_2"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10"/>
+  </joint>
+  <!-- Link caster_40mm_wheel_support_01 -->
+  <link name="caster_40mm_wheel_support_01">
+    <inertial>
+      <origin xyz="-0.000469757 -0.00666336 -0.0085057" rpy="0 0 0"/>
+      <mass value="0.0177347"/>
+      <inertia ixx="2.35477e-06" ixy="-7.3611e-08" ixz="-9.5747e-08" iyy="2.30168e-06" iyz="-7.22818e-07" izz="2.54646e-06"/>
+    </inertial>
+    <!-- Part caster_40mm_wheel_support_01 -->
+    <visual>
+      <origin xyz="-0 -0.0155 -0.02" rpy="0 -0 -0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/caster_40mm_wheel_support_01.stl"/>
+      </geometry>
+      <material name="caster_40mm_wheel_support_01_material">
+        <color rgba="0.705882 0.705882 0.705882 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0 -0.0155 -0.02" rpy="0 -0 -0"/>
+      <geometry>
+        <box size="0.04 0.04 0.04"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link caster_40mm_wheel_30mm_01 -->
+  <link name="caster_40mm_wheel_30mm_01">
+    <inertial>
+      <origin xyz="0 -0 0" rpy="0 0 0"/>
+      <mass value="0.007"/>
+      <inertia ixx="5.2943e-07" ixy="0" ixz="-0" iyy="5.2943e-07" iyz="-0" izz="8.93552e-07"/>
+    </inertial>
+    <!-- Part caster_40mm_wheel_30mm_01 -->
+    <visual>
+      <origin xyz="0 -0 0" rpy="-1.5708 -1.5708 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/caster_40mm_wheel_30mm_01.stl"/>
+      </geometry>
+      <material name="caster_40mm_wheel_30mm_01_material">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 -0 0" rpy="-1.5708 -1.5708 0"/>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint from caster_40mm_wheel_support_01 to caster_40mm_wheel_30mm_01 -->
+  <joint name="caster_wheel" type="continuous">
+    <origin xyz="-0 -0.0155 -0.02" rpy="1.5708 0 1.5708"/>
+    <parent link="caster_40mm_wheel_support_01"/>
+    <child link="caster_40mm_wheel_30mm_01"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10"/>
+  </joint>
+  <!-- Joint from chassis to caster_40mm_wheel_support_01 -->
+  <joint name="caster_swivel" type="revolute">
+    <origin xyz="0.0967499 -2.63931e-05 -0.0186507" rpy="0 -0 -1.5708"/>
+    <parent link="chassis"/>
+    <child link="caster_40mm_wheel_support_01"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10" lower="-3.141592653589793" upper="3.141592653589793"/>
+  </joint>
+</robot>
