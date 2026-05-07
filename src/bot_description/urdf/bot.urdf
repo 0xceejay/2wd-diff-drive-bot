@@ -3,11 +3,16 @@
 <!-- Onshape https://cad.onshape.com/documents/292c33a7f0f854a3cdb21f44/w/3cfe75fb330dfc627e8355b6/e/a29efea0b989aa0e985d95df -->
 <robot name="bot">
   <!-- Link chassis -->
-  <link name="chassis">
+  <link name="base_link"/>
+  <joint name="base_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="chassis"/>
+  </joint>
+<link name="chassis">
     <inertial>
-      <origin xyz="0.0130405 0.000124284 -0.00128474" rpy="0 0 0"/>
-      <mass value="0.339643"/>
-      <inertia ixx="0.000350457" ixy="1.56317e-07" ixz="0.000101456" iyy="0.00106725" iyz="-4.33406e-07" izz="0.00133216"/>
+      <origin xyz="0.0129202 0.000124501 -0.000990078" rpy="0 0 0"/>
+      <mass value="0.339156"/>
+      <inertia ixx="0.000348157" ixy="1.50161e-07" ixz="9.3078e-05" iyy="0.00106157" iyz="-4.18326e-07" izz="0.00132856"/>
     </inertial>
     <!-- Part spacer -->
     <visual>
@@ -157,7 +162,7 @@
     </visual>
     <!-- Part caster_40mm_swivel_plate_01 -->
     <visual>
-      <origin xyz="0.0812499 -2.63931e-05 -0.0380007" rpy="0 -0 -1.5708"/>
+      <origin xyz="0.0812499 -2.63931e-05 -0.0310007" rpy="0 -0 -1.5708"/>
       <geometry>
         <mesh filename="package://bot_description/meshes/caster_40mm_swivel_plate_01.stl"/>
       </geometry>
@@ -415,7 +420,7 @@
     </inertial>
     <!-- Part tt_motor_3777_v10_15 -->
     <visual>
-      <origin xyz="0 0 0" rpy="1.5708 -0 0"/>
+      <origin xyz="0 -0 0" rpy="1.5708 -0 0"/>
       <geometry>
         <mesh filename="package://bot_description/meshes/tt_motor_3777_v10__8.stl"/>
       </geometry>
@@ -425,7 +430,7 @@
     </visual>
     <!-- Part wheel -->
     <visual>
-      <origin xyz="0.00025 -0 -0.0484" rpy="1.5708 -0 -1.5708"/>
+      <origin xyz="0.00025 -0 -0.0484" rpy="1.5708 0 -1.5708"/>
       <geometry>
         <mesh filename="package://bot_description/meshes/wheel.stl"/>
       </geometry>
@@ -442,7 +447,7 @@
   </link>
   <!-- Joint from chassis to wheel -->
   <joint name="right_wheel" type="continuous">
-    <origin xyz="-0.00036815 -0.0387764 -0.0135492" rpy="-1.5708 -0 0"/>
+    <origin xyz="-0.00036815 -0.0387764 -0.0135492" rpy="1.5708 -0.995712 -3.14159"/>
     <parent link="chassis"/>
     <child link="wheel"/>
     <axis xyz="0 0 1"/>
@@ -534,7 +539,7 @@
     <collision>
       <origin xyz="0 -0 0" rpy="0 0 0"/>
       <geometry>
-        <sphere radius="0.02"/>
+        <sphere radius="0.015"/>
       </geometry>
     </collision>
   </link>
@@ -548,7 +553,7 @@
   </joint>
   <!-- Joint from chassis to caster_40mm_wheel_support_01 -->
   <joint name="caster_swivel" type="revolute">
-    <origin xyz="0.0967499 -2.63931e-05 -0.0186507" rpy="0 -0 -1.5708"/>
+    <origin xyz="0.0967499 -2.63931e-05 -0.0116507" rpy="0 -0 -1.5708"/>
     <parent link="chassis"/>
     <child link="caster_40mm_wheel_support_01"/>
     <axis xyz="0 0 1"/>

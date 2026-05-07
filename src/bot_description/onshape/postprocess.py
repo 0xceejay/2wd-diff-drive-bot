@@ -28,7 +28,7 @@ replacements = {
     'wheel': {'shape': '<cylinder radius="0.033" length="0.04"/>', 'rpy': '0 0 1.5708'},
     'wheel_2': {'shape': '<cylinder radius="0.033" length="0.04"/>', 'rpy': '0 0 1.5708'},
     'caster_40mm_wheel_support_01': {'shape': '<box size="0.04 0.04 0.02"/>', 'rpy': '0 0 0'},
-    'caster_40mm_wheel_30mm_01': {'shape': '<sphere radius="0.02"/>', 'rpy': '0 0 0'}
+    'caster_40mm_wheel_30mm_01': {'shape': '<sphere radius="0.015"/>', 'rpy': '0 0 0'}
 }
 
 for link_name, data in replacements.items():
@@ -64,6 +64,15 @@ for link_name, z_shift in offsets.items():
 # Change meshes lookup directory
 content = content.replace('package://bot_description/assets/', 'package://bot_description/meshes/')
 content = re.sub(r'\n\s*\n', '\n', content)
+
+# Inject a dummy root link
+dummy_root = """<link name="base_link"/>
+  <joint name="base_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="chassis"/>
+  </joint>
+"""
+content = content.replace('<link name="chassis">', dummy_root + '<link name="chassis">')
 
 os.makedirs(os.path.dirname(URDF_DEST), exist_ok=True)
 with open(URDF_DEST, 'w') as f:
