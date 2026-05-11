@@ -27,10 +27,17 @@ size_t agent_port = 8888;
 rcl_allocator_t allocator;
 rclc_executor_t executor;
 rclc_support_t support;
-
 rcl_subscription_t subscriber;
 rcl_node_t node;
 geometry_msgs__msg__Twist msg;
+
+// Robot geometry
+const float WHEEL_RADIUS = 0.033;
+const float WHEEL_BASE = 0.1443;
+
+// Velocity variables
+float left_wheel_velocity = 0.0;
+float right_wheel_velocity = 0.0;
 
 // CALLBACK FUNC: runs automatically whenever a new /cmd_vel message is received
 void cmd_vel_callback(const void * msgin)
@@ -39,14 +46,17 @@ void cmd_vel_callback(const void * msgin)
   const geometry_msgs__msg__Twist * twist_msg =
     (const geometry_msgs__msg__Twist *)msgin;
 
-  // Print reveived linear velocity
-  Serial.print("Linear X: ");
-  Serial.print(twist_msg->linear.x);
+  float linear_velocity = twist_msg->linear.x;
+  float angular_velocity = twist_msg->angular.z;
 
-  // Print received angular velocity
-  Serial.print(" | Angular Z: ");
-  Serial.print(twist_msg->angular.z);
-  Serial.print("\n\n");
+  left_wheel_velocity = linear_velocity - (WHEEL_BASE / 2.0) * angular_velocity;
+  right_wheel_velocity = linear_velocity + (WHEEL_BASE / 2.0) * angular_velocity;
+
+  // Print results
+  Serial.print("Left Wheel Velocity: ");
+  Serial.print(left_wheel_velocity);
+  Serial.print(" | Right Wheel Velocity: ");
+  Serial.println(right_wheel_velocity);
 }
 
 // SETUP
