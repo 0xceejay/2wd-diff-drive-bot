@@ -39,6 +39,149 @@ const float WHEEL_BASE = 0.1443;
 float left_wheel_velocity = 0.0;
 float right_wheel_velocity = 0.0;
 
+// TB6612FNG motor pins
+const int PWMA = 25;
+const int AIN1 = 26;
+const int AIN2 = 27;
+
+const int PWMB = 13;
+const int BIN1 = 33;
+const int BIN2 = 32;
+
+const int STBY = 14;
+
+// PWM settings
+const int PWM_FREQ = 20000;
+
+// PWM resolution in bits
+// 8 bits (values from 0 to 255)
+const int PWM_RESOLUTION = 8;
+const int PWM_CHANNEL_A = 0;
+const int PWM_CHANNEL_B = 1;
+
+// Speed limit
+const int MAX_PWM = 80;
+const int MIN_MOVING_PWM = 30;
+const unsigned long CMD_VEL_TIMEOUT_MS = 500;
+
+// Motor trim
+// Use to reduce speed if one motor moves faster than the other
+const float LEFT_MOTOR_TRIM = 0.625;
+const float RIGHT_MOTOR_TRIM = 1.00;
+
+// Timestamp of last received /cmd_vel message
+unsigned long last_cmd_vel_ms = 0;
+
+// Flag to track if we've received at least one /cmd_vel message
+bool has_received_cmd_vel = false;
+
+// Clamp PWM values to at least MIN_MOVING_PWM in magnitude for small inputs.
+int applyMinimumMovingPwm(int pwm)
+{
+  if (pwm == 0)
+  {
+    return 0;
+  }
+
+  if (abs(pwm) < MIN_MOVING_PWM)
+  {
+    return pwm > 0 ? MIN_MOVING_PWM : -MIN_MOVING_PWM;
+  }
+
+  return pwm;
+}
+
+// Motor function to initialize motor driver
+void setupMotors()
+{
+  // Configure direction pins as outputs
+  pinMode(AIN1, OUTPUT);
+  pinMode(AIN2, OUTPUT);
+  pinMode(BIN1, OUTPUT);
+  pinMode(BIN2, OUTPUT);
+  pinMode(STBY, OUTPUT);
+
+  // Enable motor driver
+  digitalWrite(STBY, HIGH);
+
+  // Configure ESP32 PWM channels
+  ledcSetup(PWM_CHANNEL_A, PWM_FREQ, PWM_RESOLUTION);
+  ledcSetup(PWM_CHANNEL_B, PWM_FREQ, PWM_RESOLUTION);
+
+  // Attach PWM channels to physical pins
+  ledcAttachPin(PWMA, PWM_CHANNEL_A);
+  ledcAttachPin(PWMB, PWM_CHANNEL_B);
+}
+
+// CONTROL LEFT MOTOR
+// pwm range: -255 -> full reverse; 0 -> stop; 255 -> full forward
+void setLeftMotor(int pwm)
+{
+  // Prevent invalid PWM values
+  pwm = constrain(pwm, -255, 255);
+
+  // Forward
+  if (pwm > 0)
+  {
+    digitalWrite(AIN1, HIGH);
+    digitalWrite(AIN2, LOW);
+  }
+
+  // Reverse
+  else if (pwm < 0)
+  {
+    digitalWrite(AIN1, LOW);
+    digitalWrite(AIN2, HIGH);
+  }
+
+  // Stop
+  else
+  {
+    digitalWrite(AIN1, HIGH);
+    digitalWrite(AIN2, HIGH);
+  }
+
+  // Apply PWM speed
+  ledcWrite(PWM_CHANNEL_A, abs(pwm));
+}
+
+void setRightMotor(int pwm)
+{
+  // Prevent invalid PWM values
+  pwm = constrain(pwm, -255, 255);
+
+  // Forward
+  if (pwm > 0)
+  {
+    digitalWrite(BIN1, HIGH);
+    digitalWrite(BIN2, LOW);
+  }
+
+  // Reverse
+  else if (pwm < 0)
+  {
+    digitalWrite(BIN1, LOW);
+    digitalWrite(BIN2, HIGH);
+  }
+
+  // Stop
+  else
+  {
+    digitalWrite(BIN1, HIGH);
+    digitalWrite(BIN2, HIGH);
+  }
+
+  // Apply PWM speed
+  ledcWrite(PWM_CHANNEL_B, abs(pwm));
+}
+
+// STOP BOTH MOTORS
+void stopMotors()
+{
+  setLeftMotor(0);
+  setRightMotor(0);
+}
+
 // CALLBACK FUNC: runs automatically whenever a new /cmd_vel message is received
 void cmd_vel_callback(const void * msgin)
 {
@@ -52,11 +195,38 @@ void cmd_vel_callback(const void * msgin)
   left_wheel_velocity = linear_velocity - (WHEEL_BASE / 2.0) * angular_velocity;
   right_wheel_velocity = linear_velocity + (WHEEL_BASE / 2.0) * angular_velocity;
 
+  float max_wheel_speed = 0.5; // m/s
+
+  // Scale wheel velocity to PWM range
+  int left_pwm =
+    (left_wheel_velocity / max_wheel_speed) * MAX_PWM * LEFT_MOTOR_TRIM;
+  int right_pwm =
+    (right_wheel_velocity / max_wheel_speed) * MAX_PWM * RIGHT_MOTOR_TRIM;
+
+  // Prevent unsafe PWM values
+  left_pwm = constrain(left_pwm, -MAX_PWM, MAX_PWM);
+  right_pwm = constrain(right_pwm, -MAX_PWM, MAX_PWM);
+
+  // Pure turns give very small PWM values, too small to move the motors.
+  left_pwm = applyMinimumMovingPwm(left_pwm);
+  right_pwm = applyMinimumMovingPwm(right_pwm);
+
+  // Send commands to motors
+  setLeftMotor(left_pwm);
+  setRightMotor(right_pwm);
+
+  last_cmd_vel_ms = millis();
+  has_received_cmd_vel = true;
+
   // Print results
-  Serial.print("Left Wheel Velocity: ");
-  Serial.print(left_wheel_velocity);
-  Serial.print(" | Right Wheel Velocity: ");
-  Serial.println(right_wheel_velocity);
+  Serial.print("Linear: ");
+  Serial.print(linear_velocity);
+  Serial.print(" | Angular: ");
+  Serial.print(angular_velocity);
+  Serial.print(" | Left PWM: ");
+  Serial.print(left_pwm);
+  Serial.print(" | Right PWM: ");
+  Serial.println(right_pwm);
 }
 
 // SETUP
@@ -65,6 +235,12 @@ void setup()
   // Start serial communication
   Serial.begin(115200);
   delay(2000);
+
+  // Initialize motor driver
+  setupMotors();
+
+  // Ensure motors are stopped at startup
+  stopMotors();
 
   // Configure WiFi transport for micro-ROS
   set_microros_wifi_transports(
@@ -86,7 +262,7 @@ void setup()
   rclc_node_init_default(&node, "esp32_node", "", &support);
 
   // Create subscriber for /cmd_vel
-  rclc_subscription_init_default(
+  rclc_subscription_init_best_effort(
     &subscriber,
     &node,
 
@@ -128,5 +304,12 @@ void loop()
   );
 
   delay(10);
-}
 
+  // Stop motors if no cmd_vel message received within timeout period
+  if (has_received_cmd_vel && millis() - last_cmd_vel_ms > CMD_VEL_TIMEOUT_MS)
+  {
+    stopMotors();
+    has_received_cmd_vel = false;
+    Serial.println("cmd_vel timeout; motors stopped");
+  }
+}
