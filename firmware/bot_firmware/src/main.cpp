@@ -1,4 +1,6 @@
 #include <Arduino.h>
+#include <Encoders.h>
+#include <Motors.h>
 #include <micro_ros_platformio.h>
 
 // Core ROS 2 C libraries
@@ -12,7 +14,7 @@
 // WIFI credentials
 #include "wifi_secrets.hpp"
 
-// IP addresso of laptop running micro-ROS agent
+// IP address
 IPAddress agent_ip(
   AGENT_IP_1,
   AGENT_IP_2,
@@ -39,17 +41,6 @@ const float WHEEL_BASE = 0.1443;
 float left_wheel_velocity = 0.0;
 float right_wheel_velocity = 0.0;
 
-// TB6612FNG motor pins
-const int PWMA = 25;
-const int AIN1 = 26;
-const int AIN2 = 27;
-
-const int PWMB = 13;
-const int BIN1 = 33;
-const int BIN2 = 32;
-
-const int STBY = 14;
-
 // PWM settings
 const int PWM_FREQ = 20000;
 
@@ -60,14 +51,39 @@ const int PWM_CHANNEL_A = 0;
 const int PWM_CHANNEL_B = 1;
 
 // Speed limit
-const int MAX_PWM = 80;
-const int MIN_MOVING_PWM = 30;
+const int MAX_PWM = 100;
+const int MIN_MOVING_PWM = 55;
 const unsigned long CMD_VEL_TIMEOUT_MS = 500;
 
 // Motor trim
 // Use to reduce speed if one motor moves faster than the other
-const float LEFT_MOTOR_TRIM = 0.625;
+const float LEFT_MOTOR_TRIM = 0.9;
 const float RIGHT_MOTOR_TRIM = 1.00;
+
+MotorPins motor_pins = {
+  25, // PWMA
+  26, // AIN1
+  27, // AIN2
+  13, // PWMB
+  33, // BIN1
+  32, // BIN2
+  14  // STBY
+};
+
+Motors motors(
+  motor_pins,
+  PWM_FREQ,
+  PWM_RESOLUTION,
+  PWM_CHANNEL_A,
+  PWM_CHANNEL_B
+);
+
+Encoders encoders(
+  34,   // Left HC-020K encoder pin
+  35,   // Right HC-020K encoder pin
+  20,   // Encoder pulses per wheel revolution
+  1000  // Print interval in milliseconds
+);
 
 // Timestamp of last received /cmd_vel message
 unsigned long last_cmd_vel_ms = 0;
@@ -90,98 +106,6 @@ int applyMinimumMovingPwm(int pwm)
 
   return pwm;
 }
-
-// Motor function to initialize motor driver
-void setupMotors()
-{
-  // Configure direction pins as outputs
-  pinMode(AIN1, OUTPUT);
-  pinMode(AIN2, OUTPUT);
-  pinMode(BIN1, OUTPUT);
-  pinMode(BIN2, OUTPUT);
-  pinMode(STBY, OUTPUT);
-
-  // Enable motor driver
-  digitalWrite(STBY, HIGH);
-
-  // Configure ESP32 PWM channels
-  ledcSetup(PWM_CHANNEL_A, PWM_FREQ, PWM_RESOLUTION);
-  ledcSetup(PWM_CHANNEL_B, PWM_FREQ, PWM_RESOLUTION);
-
-  // Attach PWM channels to physical pins
-  ledcAttachPin(PWMA, PWM_CHANNEL_A);
-  ledcAttachPin(PWMB, PWM_CHANNEL_B);
-}
-
-// CONTROL LEFT MOTOR
-// pwm range: -255 -> full reverse; 0 -> stop; 255 -> full forward
-void setLeftMotor(int pwm)
-{
-  // Prevent invalid PWM values
-  pwm = constrain(pwm, -255, 255);
-
-  // Forward
-  if (pwm > 0)
-  {
-    digitalWrite(AIN1, HIGH);
-    digitalWrite(AIN2, LOW);
-  }
-
-  // Reverse
-  else if (pwm < 0)
-  {
-    digitalWrite(AIN1, LOW);
-    digitalWrite(AIN2, HIGH);
-  }
-
-  // Stop
-  else
-  {
-    digitalWrite(AIN1, HIGH);
-    digitalWrite(AIN2, HIGH);
-  }
-
-  // Apply PWM speed
-  ledcWrite(PWM_CHANNEL_A, abs(pwm));
-}
-
-void setRightMotor(int pwm)
-{
-  // Prevent invalid PWM values
-  pwm = constrain(pwm, -255, 255);
-
-  // Forward
-  if (pwm > 0)
-  {
-    digitalWrite(BIN1, HIGH);
-    digitalWrite(BIN2, LOW);
-  }
-
-  // Reverse
-  else if (pwm < 0)
-  {
-    digitalWrite(BIN1, LOW);
-    digitalWrite(BIN2, HIGH);
-  }
-
-  // Stop
-  else
-  {
-    digitalWrite(BIN1, HIGH);
-    digitalWrite(BIN2, HIGH);
-  }
-
-  // Apply PWM speed
-  ledcWrite(PWM_CHANNEL_B, abs(pwm));
-}
-
-// STOP BOTH MOTORS
-void stopMotors()
-{
-  setLeftMotor(0);
-  setRightMotor(0);
-}
-
 // CALLBACK FUNC: runs automatically whenever a new /cmd_vel message is received
 void cmd_vel_callback(const void * msgin)
 {
@@ -212,21 +136,21 @@ void cmd_vel_callback(const void * msgin)
   right_pwm = applyMinimumMovingPwm(right_pwm);
 
   // Send commands to motors
-  setLeftMotor(left_pwm);
-  setRightMotor(right_pwm);
+  motors.setLeft(left_pwm);
+  motors.setRight(right_pwm);
 
   last_cmd_vel_ms = millis();
   has_received_cmd_vel = true;
 
   // Print results
-  Serial.print("Linear: ");
-  Serial.print(linear_velocity);
-  Serial.print(" | Angular: ");
-  Serial.print(angular_velocity);
-  Serial.print(" | Left PWM: ");
-  Serial.print(left_pwm);
-  Serial.print(" | Right PWM: ");
-  Serial.println(right_pwm);
+  // Serial.print("Linear: ");
+  // Serial.print(linear_velocity);
+  // Serial.print(" | Angular: ");
+  // Serial.print(angular_velocity);
+  // Serial.print(" | Left PWM: ");
+  // Serial.print(left_pwm);
+  // Serial.print(" | Right PWM: ");
+  // Serial.println(right_pwm);
 }
 
 // SETUP
@@ -236,11 +160,12 @@ void setup()
   Serial.begin(115200);
   delay(2000);
 
-  // Initialize motor driver
-  setupMotors();
+  // Initialize motor driver and wheel encoders
+  motors.begin();
+  encoders.begin();
 
   // Ensure motors are stopped at startup
-  stopMotors();
+  motors.stop();
 
   // Configure WiFi transport for micro-ROS
   set_microros_wifi_transports(
@@ -305,10 +230,13 @@ void loop()
 
   delay(10);
 
+  // Continuously calculate and print encoder RPM/ticks
+  encoders.printData();
+
   // Stop motors if no cmd_vel message received within timeout period
   if (has_received_cmd_vel && millis() - last_cmd_vel_ms > CMD_VEL_TIMEOUT_MS)
   {
-    stopMotors();
+    motors.stop();
     has_received_cmd_vel = false;
     Serial.println("cmd_vel timeout; motors stopped");
   }

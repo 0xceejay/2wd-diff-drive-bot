@@ -27,10 +27,13 @@ These settings live in `platformio.ini`.
 bot_firmware/
 |-- include/
 |   |-- wifi_secrets.hpp  # Local Wi-Fi and agent IP settings
-|   `-- README
-|-- lib/                  # Optional private PlatformIO libraries
+|   |-- README
+|-- lib/
+|   |-- Encoders/         # HC-020K wheel encoder helper
+|   |-- Motors/           # TB6612FNG motor driver helper
+|   |-- README
 |-- src/
-|   `-- main.cpp          # ESP32 micro-ROS node
+|   |-- main.cpp          # ESP32 micro-ROS node
 |-- test/                 # PlatformIO tests
 |-- platformio.ini
 `-- README.md
