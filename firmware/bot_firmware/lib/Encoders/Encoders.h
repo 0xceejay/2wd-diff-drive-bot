@@ -19,15 +19,15 @@ public:
   Encoders(
     int left_pin,
     int right_pin,
-    int pulses_per_revolution,
-    unsigned long print_interval_ms
+    int pulses_per_revolution
   );
 
   // Configure encoder GPIO inputs and attach interrupt handlers.
   void begin();
 
-  // Print ticks/RPM no faster than the configured print interval.
-  void printData();
+  // HC-020K sensors provide one pulse channel and cannot determine direction.
+  // Supply the direction commanded to each motor: -1, 0, or 1.
+  void setDirections(int left_direction, int right_direction);
 
   // Copy tick counters safely and calculate RPM since the previous read().
   EncoderReading read();
@@ -40,7 +40,6 @@ private:
   int left_pin_;
   int right_pin_;
   int pulses_per_revolution_;
-  unsigned long print_interval_ms_;
   long previous_left_ticks_;
   long previous_right_ticks_;
   unsigned long previous_time_ms_;

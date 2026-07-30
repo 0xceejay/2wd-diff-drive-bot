@@ -5,18 +5,18 @@ namespace
 // Tick counters are updated inside ISRs, so they must be volatile.
 volatile long left_encoder_ticks = 0;
 volatile long right_encoder_ticks = 0;
+volatile int left_encoder_direction = 0;
+volatile int right_encoder_direction = 0;
 }
 
 Encoders::Encoders(
   int left_pin,
   int right_pin,
-  int pulses_per_revolution,
-  unsigned long print_interval_ms
+  int pulses_per_revolution
 ) :
   left_pin_(left_pin),
   right_pin_(right_pin),
   pulses_per_revolution_(pulses_per_revolution),
-  print_interval_ms_(print_interval_ms),
   previous_left_ticks_(0),
   previous_right_ticks_(0),
   previous_time_ms_(0)
@@ -43,6 +43,21 @@ void Encoders::begin()
   );
 
   previous_time_ms_ = millis();
+}
+
+void Encoders::setDirections(int left_direction, int right_direction)
+{
+  // Normalize arbitrary inputs so the interrupt handlers only use -1, 0, or 1.
+  int normalized_left =
+    left_direction > 0 ? 1 : (left_direction < 0 ? -1 : 0);
+  int normalized_right =
+    right_direction > 0 ? 1 : (right_direction < 0 ? -1 : 0);
+
+  // Direction is shared with the interrupt handlers, so update it atomically.
+  noInterrupts();
+  left_encoder_direction = normalized_left;
+  right_encoder_direction = normalized_right;
+  interrupts();
 }
 
 EncoderReading Encoders::read()
@@ -86,36 +101,13 @@ EncoderReading Encoders::read()
   return reading;
 }
 
-void Encoders::printData()
-{
-  unsigned long current_time_ms = millis();
-
-  // Keep Serial output readable and avoid slowing the main control loop.
-  if (current_time_ms - previous_time_ms_ < print_interval_ms_)
-  {
-    return;
-  }
-
-  EncoderReading reading = read();
-
-  Serial.print("Left ticks: ");
-  Serial.print(reading.left_ticks);
-  Serial.print(" | Right ticks: ");
-  Serial.print(reading.right_ticks);
-  Serial.print(" | Left RPM: ");
-  Serial.print(reading.left_rpm);
-  Serial.print(" | Right RPM: ");
-  Serial.println(reading.right_rpm);
-}
-
 void IRAM_ATTR Encoders::leftISR()
 {
-  // Keep ISRs tiny: only count the pulse and return.
-  left_encoder_ticks++;
+  // Infer signed motion from the direction most recently commanded to the motor.
+  left_encoder_ticks += left_encoder_direction;
 }
 
 void IRAM_ATTR Encoders::rightISR()
 {
-  // Keep ISRs tiny: only count the pulse and return.
-  right_encoder_ticks++;
+  right_encoder_ticks += right_encoder_direction;
 }
