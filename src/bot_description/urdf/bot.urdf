@@ -10,9 +10,9 @@
   </joint>
 <link name="chassis">
     <inertial>
-      <origin xyz="0.0129202 0.000124501 -0.000990078" rpy="0 0 0"/>
-      <mass value="0.339156"/>
-      <inertia ixx="0.000348157" ixy="1.50161e-07" ixz="9.3078e-05" iyy="0.00106157" iyz="-4.18326e-07" izz="0.00132856"/>
+      <origin xyz="0.0129417 0.000124462 -0.00104202" rpy="0 0 0"/>
+      <mass value="0.339243"/>
+      <inertia ixx="0.00034847" ixy="1.51262e-07" ixz="9.45548e-05" iyy="0.00106249" iyz="-4.20985e-07" izz="0.0013292"/>
     </inertial>
     <!-- Part spacer -->
     <visual>
@@ -22,6 +22,16 @@
       </geometry>
       <material name="spacer_material">
         <color rgba="0.231373 0.380392 0.705882 1"/>
+      </material>
+    </visual>
+    <!-- Part mpu6050 -->
+    <visual>
+      <origin xyz="0.0979786 0.033993 0.0089771" rpy="0 -0 -3.14159"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/mpu6050.stl"/>
+      </geometry>
+      <material name="mpu6050_material">
+        <color rgba="0.921569 0.921569 0.921569 1"/>
       </material>
     </visual>
     <!-- Part tt_motor_3777_v10 -->
@@ -162,7 +172,7 @@
     </visual>
     <!-- Part caster_40mm_swivel_plate_01 -->
     <visual>
-      <origin xyz="0.0812499 -2.63931e-05 -0.0310007" rpy="0 -0 -1.5708"/>
+      <origin xyz="0.0812499 -2.63931e-05 -0.0322507" rpy="0 -0 -1.5708"/>
       <geometry>
         <mesh filename="package://bot_description/meshes/caster_40mm_swivel_plate_01.stl"/>
       </geometry>
@@ -411,6 +421,21 @@
       </material>
     </visual>
   </link>
+  <!-- Frame imu_link (dummy link + fixed joint) -->
+  <link name="imu_link">
+    <origin xyz="0 0 0" rpy="0 -0 0"/>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1e-9"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+  </link>
+  <joint name="imu_link_frame" type="fixed">
+    <origin xyz="0.0979786 0.033993 0.0089771" rpy="0 -0 0"/>
+    <parent link="chassis"/>
+    <child link="imu_link"/>
+    <axis xyz="0 0 0"/>
+  </joint>
   <!-- Link wheel -->
   <link name="wheel">
     <inertial>
@@ -504,7 +529,7 @@
     </inertial>
     <!-- Part caster_40mm_wheel_support_01 -->
     <visual>
-      <origin xyz="-0 -0.0155 -0.02" rpy="0 -0 -0"/>
+      <origin xyz="-0 -0.0155 -0.02" rpy="-0 -0 0"/>
       <geometry>
         <mesh filename="package://bot_description/meshes/caster_40mm_wheel_support_01.stl"/>
       </geometry>
@@ -522,13 +547,13 @@
   <!-- Link caster_40mm_wheel_30mm_01 -->
   <link name="caster_40mm_wheel_30mm_01">
     <inertial>
-      <origin xyz="0 -0 0" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="0.007"/>
-      <inertia ixx="5.2943e-07" ixy="0" ixz="-0" iyy="5.2943e-07" iyz="-0" izz="8.93552e-07"/>
+      <inertia ixx="5.2943e-07" ixy="-0" ixz="-0" iyy="5.2943e-07" iyz="-0" izz="8.93552e-07"/>
     </inertial>
     <!-- Part caster_40mm_wheel_30mm_01 -->
     <visual>
-      <origin xyz="0 -0 0" rpy="-1.5708 -1.5708 0"/>
+      <origin xyz="0 0 0" rpy="-1.5708 -1.5708 0"/>
       <geometry>
         <mesh filename="package://bot_description/meshes/caster_40mm_wheel_30mm_01.stl"/>
       </geometry>
@@ -537,7 +562,7 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0 -0 0" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
         <sphere radius="0.015"/>
       </geometry>
@@ -545,7 +570,7 @@
   </link>
   <!-- Joint from caster_40mm_wheel_support_01 to caster_40mm_wheel_30mm_01 -->
   <joint name="caster_wheel" type="continuous">
-    <origin xyz="-0 -0.0155 -0.02" rpy="1.5708 0 1.5708"/>
+    <origin xyz="-0 -0.0155 -0.02" rpy="1.5708 -0 1.5708"/>
     <parent link="caster_40mm_wheel_support_01"/>
     <child link="caster_40mm_wheel_30mm_01"/>
     <axis xyz="0 0 1"/>
@@ -553,7 +578,7 @@
   </joint>
   <!-- Joint from chassis to caster_40mm_wheel_support_01 -->
   <joint name="caster_swivel" type="revolute">
-    <origin xyz="0.0967499 -2.63931e-05 -0.0116507" rpy="0 -0 -1.5708"/>
+    <origin xyz="0.0967499 -2.63931e-05 -0.0129007" rpy="-0 0 1.71597"/>
     <parent link="chassis"/>
     <child link="caster_40mm_wheel_support_01"/>
     <axis xyz="0 0 1"/>

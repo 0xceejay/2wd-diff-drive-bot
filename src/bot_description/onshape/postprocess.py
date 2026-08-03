@@ -12,10 +12,11 @@ with open('robot.urdf', 'r') as f:
 
 #  Remove collisions for internal/small parts
 parts_to_strip = [
-    'spacer', 'tt_motor_3777_v10', 'motor_holders', 'main_half_size_board',
-    'half_size_side_rail', 'remache_v1_0', 'contacto_plano_v1_0',
-    'porta_baterias_2x18650', 'contacto_helice_v2_0', 'bateria_18650',
-    'caster_40mm_swivel_plate_01'
+    'spacer', 'mpu6050', 'tt_motor_3777_v10', 'motor_holders',
+    'main_half_size_board', 'half_size_side_rail', 'remache_v1_0',
+    'contacto_plano_v1_0', 'porta_baterias_2x18650',
+    'contacto_helice_v2_0', 'bateria_18650',
+    'caster_40mm_swivel_plate_01',
 ]
 
 for part in parts_to_strip:
@@ -32,12 +33,14 @@ replacements = {
 }
 
 for link_name, data in replacements.items():
+    part_name = re.escape(link_name)
+
     # This keeps 'xyz' exactly as it is but changes the angles
-    rpy_pattern = rf'(<link name="{link_name}">.*?<collision>.*?<origin\s+xyz="[^"]+")\s+rpy="[^"]+"'
+    rpy_pattern = rf'(<!-- Part {part_name} -->.*?<collision>.*?<origin\s+xyz="[^"]+")\s+rpy="[^"]+"'
     content = re.sub(rpy_pattern, rf'\1 rpy="{data["rpy"]}"', content, flags=re.DOTALL)
 
     # Replace the Geometry
-    geom_pattern = rf'(<link name="{link_name}">.*?<collision>.*?<geometry>).*?(</geometry>)'
+    geom_pattern = rf'(<!-- Part {part_name} -->.*?<collision>.*?<geometry>).*?(</geometry>)'
     content = re.sub(geom_pattern, rf'\1\n        {data["shape"]}\n      \2', content, flags=re.DOTALL)
 
 offsets = {
@@ -47,7 +50,8 @@ offsets = {
 
 for link_name, z_shift in offsets.items():
     # This finds the collision origin tag for the specific link
-    pattern = rf'(<link name="{link_name}">.*?<collision>.*?<origin\s+xyz=")([-?\d\.e-]+)\s+([-?\d\.e-]+)\s+([-?\d\.e-]+)"'
+    part_name = re.escape(link_name)
+    pattern = rf'(<!-- Part {part_name} -->.*?<collision>.*?<origin\s+xyz=")([-?\d\.e-]+)\s+([-?\d\.e-]+)\s+([-?\d\.e-]+)"'
 
     def shift_z(match):
         prefix = match.group(1)
@@ -92,5 +96,7 @@ if os.path.exists(ASSETS_SRC):
     print(f"✅ {files_moved} meshes copied to: {MESHES_DEST}")
 
 
-os.remove('robot.urdf')
-shutil.rmtree(ASSETS_SRC)
+if os.path.exists('robot.urdf'):
+    os.remove('robot.urdf')
+if os.path.exists(ASSETS_SRC):
+    shutil.rmtree(ASSETS_SRC)
