@@ -36,6 +36,7 @@ Onshape, and creates a temporary `robot.urdf` plus an `assets/` folder.
 - removes collision geometry from small/internal parts
 - replaces selected collision meshes with simple box, cylinder, or sphere shapes
 - adjusts wheel collision orientation and offsets
+- adds light damping and friction to the caster swivel joint
 - removes the temporary `robot.urdf` and `assets/` folder
 
 ## Notes

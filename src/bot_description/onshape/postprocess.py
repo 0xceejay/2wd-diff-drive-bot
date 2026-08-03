@@ -65,6 +65,20 @@ for link_name, z_shift in offsets.items():
 
     content = re.sub(pattern, shift_z, content, flags=re.DOTALL)
 
+# Add light resistance to the caster swivel without affecting wheel rolling.
+caster_swivel_pattern = (
+    r'(<joint name="caster_swivel"[^>]*>.*?<axis\s+xyz="[^"]+"/>)'
+)
+content, replacement_count = re.subn(
+    caster_swivel_pattern,
+    r'\1\n    <dynamics damping="0.01" friction="0.002"/>',
+    content,
+    count=1,
+    flags=re.DOTALL,
+)
+if replacement_count != 1:
+    raise RuntimeError('Could not add dynamics to caster_swivel joint')
+
 # Change meshes lookup directory
 content = content.replace('package://bot_description/assets/', 'package://bot_description/meshes/')
 content = re.sub(r'\n\s*\n', '\n', content)
